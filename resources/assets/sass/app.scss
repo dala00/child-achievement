@@ -7,3 +7,33 @@
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+html, body, div#app {
+    height: 100%;
+}
+
+#login-container {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin: auto;
+    width: 400px;
+    height: 200px;
+}
+
+#login-container .panel-body {
+    text-align: center;
+}
+
+#action-panels {
+    margin-top: 10px;
+    height: 100%;
+}
+
+.action-panel {
+    float: left;
+    width: 33%;
+    height: 45%;
+}

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Auth\Google;
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -35,5 +39,45 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        $provider = Google::createProvider();
+        $data = [
+            'googleLoginUrl' => $provider->getAuthorizationUrl(),
+        ];
+        return view('auth.login', $data);
+    }
+
+    public function callback(Request $request)
+    {
+        $provider = Google::createProvider();
+        $token = $provider->getAccessToken('authorization_code', [
+            'code' => $request->input('code')
+        ]);
+
+        try {
+            $profile = Google::getProfile($provider, $token);
+        } catch (Exception $e) {
+            exit('Something went wrong: ' . $e->getMessage());
+        }
+
+        $profile['sub'];
+
+        $user = User::where('google_auth', $profile['sub'])->first();
+        if (!$user) {
+            $user = new User;
+            $user->google_auth = $profile['sub'];
+            $user->save();
+        }
+        Auth::login($user, true);
+        
+        return redirect('home');
     }
 }

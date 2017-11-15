@@ -11,6 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', 'HomeController@index');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::put('/home/toggle', 'HomeController@toggle');
+Route::patch('/home/toggle', 'HomeController@toggle');
+Route::get('/home/summary', 'HomeController@summary')->name('summary');
+
+Route::get('/auth/callback', 'Auth\LoginController@callback');
