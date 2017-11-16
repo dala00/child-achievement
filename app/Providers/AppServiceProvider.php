@@ -13,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if (isset($_SERVER['HTTP_X_SAKURA_FORWARDED_FOR'])) {
+            $request = \Request::instance();
+            $request->server->set('HTTPS', 'on');
+        }
     }
 
     /**
