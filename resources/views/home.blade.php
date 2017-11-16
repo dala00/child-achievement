@@ -11,8 +11,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title">{{$action['name']}}</h3>
             </div>
-            <div class="panel-body">
-                <!--<img src="{{asset("img/{$actionId}.png")}}">-->
+            <div class="panel-body text-center" style="background-image:url({{asset("img/{$actionId}.png")}})">
             </div>
         </div>
     </a>
