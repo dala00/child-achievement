@@ -29,6 +29,7 @@ class HomeController extends Controller
         $user = Auth::user();
         $enabledActions = Achievement::where('user_id', $user->id)
             ->where('action_date', Carbon::now()->format('Y-m-d'))
+            ->where('enabled', true)
             ->pluck('action');
         $actions = config('actions');
         return view('home', compact('user', 'enabledActions', 'actions'));
