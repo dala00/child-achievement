@@ -8356,6 +8356,10 @@ div#app {
   height: 100%;
 }
 
+header {
+  text-align: right;
+}
+
 #login-container {
   position: absolute;
   top: 0px;
@@ -8379,6 +8383,18 @@ div#app {
 .action-panel {
   float: left;
   width: 33%;
-  height: 45%;
+  height: 40%;
+}
+
+.action-panel .panel-body {
+  padding-top: 40px;
+}
+
+.action-panel img {
+  width: 100%;
+}
+
+.level {
+  font-size: 3rem;
 }
 

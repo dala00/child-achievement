@@ -60,6 +60,18 @@ class HomeController extends Controller
      */
     public function summary()
     {
-
+        $user = Auth::user();
+        $yesterday = Carbon::now()->subDay()->format('Y-m-d');
+        $data = [
+            'summary' => Achievement::getSummary($user->id),
+            'yesterdaySummary' => Achievement::getSummary($user->id, $yesterday),
+            'weeklySummary' => Achievement::getWeeklySummary($user->id),
+        ];
+        $data['level'] = Achievement::getLevel($data['summary']);
+        $data['yesterdayLevel'] = Achievement::getLevel($data['yesterdaySummary']);
+        $data['weeklyMax'] = $data['weeklySummary']->map(function ($summary) {
+            return $summary->cnt;
+        })->max();
+        return view('home.summary', $data);
     }
 }
