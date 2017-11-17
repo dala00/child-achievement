@@ -48,36 +48,31 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        $provider = Google::createProvider();
         $data = [
-            'googleLoginUrl' => $provider->getAuthorizationUrl(),
+            'googleLoginUrl' => Google::getLoginUrl(),
         ];
         return view('auth.login', $data);
     }
 
     public function callback(Request $request)
     {
-        $provider = Google::createProvider();
-        $token = $provider->getAccessToken('authorization_code', [
-            'code' => $request->input('code')
-        ]);
+        $client = Google::createClient();
+        $token = $client->authenticate($request->input('code'));
 
         try {
-            $profile = Google::getProfile($provider, $token);
+            $profile = Google::getProfile($client, $token);
         } catch (Exception $e) {
             exit('Something went wrong: ' . $e->getMessage());
         }
 
-        $profile['sub'];
-
-        $user = User::where('google_auth', $profile['sub'])->first();
+        $user = User::where('google_auth', $profile->id)->first();
         if (!$user) {
             $user = new User;
-            $user->google_auth = $profile['sub'];
+            $user->google_auth = $profile->id;
             $user->save();
         }
         Auth::login($user, true);
-        
+
         return redirect('home');
     }
 }

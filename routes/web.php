@@ -22,3 +22,4 @@ Route::patch('/home/toggle', 'HomeController@toggle');
 Route::get('/home/summary', 'HomeController@summary')->name('summary');
 
 Route::get('/auth/callback', 'Auth\LoginController@callback');
+Route::get('/logout', 'Auth\LoginController@logout');

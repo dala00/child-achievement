@@ -1,31 +1,30 @@
 <?php
 namespace App\Auth;
 
-use League\OAuth2\Client\Provider\Google as LeagueGoogle;
+use Google_Client;
+use Google_Service_Oauth2;
 
 class Google
 {
-    public static function createProvider()
+    public static function createClient()
     {
-        return new LeagueGoogle([
-            'clientId'     => env('GOOGLE_CLIENT_ID'),
-            'clientSecret' => env('GOOGLE_CLIENT_SECRET'),
-            'redirectUri'  => env('APP_URL') . '/auth/callback',
-            'hostedDomain' => env('APP_URL'),
-            'scopes' => 'profile',
+        return new Google_Client([
+            'client_id'     => env('GOOGLE_CLIENT_ID'),
+            'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+            'redirect_uri'  => env('APP_URL') . '/auth/callback',
         ]);
     }
 
-    public static function getProfile($provider, $token)
+    public static function getLoginUrl()
     {
-        $url = 'https://www.googleapis.com/oauth2/v3/userinfo';
-        $request = $provider->getAuthenticatedRequest(LeagueGoogle::METHOD_GET, $url, $token);
-        $response = $provider->getParsedResponse($request);
-        if (false === is_array($response)) {
-            throw new UnexpectedValueException(
-                'Invalid response received from Authorization Server. Expected JSON.'
-            );
-        }
-        return $response;
+        $client = self::createClient();
+        return $client->createAuthUrl('profile');
+    }
+
+    public static function getProfile($client, $token)
+    {
+        $oauth2 = new Google_Service_Oauth2($client);
+        $profile = $oauth2->userinfo->get();
+        return $profile;
     }
 }
