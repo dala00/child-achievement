@@ -31,7 +31,10 @@ class HomeController extends Controller
             ->where('action_date', Carbon::now()->format('Y-m-d'))
             ->where('enabled', true)
             ->pluck('action');
-        $actions = config('actions');
+        $actions = config('user_actions.' . $user->google_auth);
+        if (!$actions) {
+            $actions = config('actions');
+        }
         return view('home', compact('user', 'enabledActions', 'actions'));
     }
 
