@@ -13,9 +13,9 @@
         <div class="col-md-10">
             <div class="progress">
                 <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                    style="width: {{$summary % 100}}%;"
+                    style="width: {{floor(($summary % $experience) / $experience * 100)}}%;"
                 >
-                    {{$summary % 100}}
+                    {{$summary % $experience}}
                 </div>
             </div>
             @if ($level > $yesterdayLevel)

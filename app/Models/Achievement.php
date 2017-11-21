@@ -23,7 +23,8 @@ class Achievement extends Model
 
     public static function getLevel($summary)
     {
-        return floor($summary / 100) + 1;
+        $experience = config('app.experience');
+        return floor($summary / $experience) + 1;
     }
 
     public static function getWeeklySummary($userId)

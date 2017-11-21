@@ -228,4 +228,5 @@ return [
 
     ],
 
+    'experience' => 30,
 ];

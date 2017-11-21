@@ -70,6 +70,7 @@ class HomeController extends Controller
             'summary' => Achievement::getSummary($user->id),
             'yesterdaySummary' => Achievement::getSummary($user->id, $yesterday),
             'weeklySummary' => Achievement::getWeeklySummary($user->id),
+            'experience' => config('app.experience'),
         ];
         $data['level'] = Achievement::getLevel($data['summary']);
         $data['yesterdayLevel'] = Achievement::getLevel($data['yesterdaySummary']);
